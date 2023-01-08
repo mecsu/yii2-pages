@@ -36,6 +36,7 @@ class Pages extends ActiveRecordML
     const STATUS_PUBLISHED = 1; // Page has been published
 
     //public $url;
+    public $temp_image;
     public $baseRoute;
 
     public $moduleId = 'pages';
@@ -76,6 +77,7 @@ class Pages extends ActiveRecordML
     public function rules()
     {
         return ArrayHelper::merge([
+            [['temp_image'], 'safe'],
             [['name', 'alias', 'content', 'locale'], 'required'],
             [['name', 'alias'], 'string', 'min' => 3, 'max' => 128],
             [['name', 'alias'], 'string', 'min' => 3, 'max' => 128],
@@ -200,5 +202,30 @@ class Pages extends ActiveRecordML
     public function getPageUrl($withScheme = true, $realUrl = false)
     {
         return parent::getModelUrl($withScheme, $realUrl);
+    }
+
+
+    /**
+     * Return the query relation for author who create model or value.
+     *
+     * @return int|\yii\db\ActiveQuery
+     */
+    public function getCreatedBy()
+    {
+        if (class_exists('\app\modules\users\models\Users'))
+            return $this->hasOne(\app\modules\users\models\Users::class, ['user_id' => 'created_by']);
+        return parent::getCreatedBy();
+    }
+
+    /**
+     * Return the query relation for author who update model or value.
+     *
+     * @return int|\yii\db\ActiveQuery
+     */
+    public function getUpdatedBy()
+    {
+        if (class_exists('\app\modules\users\models\Users'))
+            return $this->hasOne(\app\modules\users\models\Users::class, ['user_id' => 'updated_by']);
+        return parent::getUpdatedBy();
     }
 }

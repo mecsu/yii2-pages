@@ -59,12 +59,60 @@ use wdmg\widgets\LangSwitcher;
         }
     ?>
 
-    <?= $form->field($model, 'content')->widget(Editor::class, [
-        'options' => [
-            'lang' => ($model->locale ?? Yii::$app->language)
-        ],
-        'pluginOptions' => []
-    ]) ?>
+    <?php
+        // echo  $form->field($model, 'content')->widget(Editor::class, [
+        //     'options' => [
+        //         'lang' => ($model->locale ?? Yii::$app->language)
+        //     ],
+        //     'pluginOptions' => []
+        // ]) 
+    ?>
+
+    <div class="hide">
+        <?php 
+            echo $form->field($model, 'temp_image')->widget(\app\modules\imagebrowser\components\ImageManagerInputWidget::className(), [
+                'aspectRatio' => (16/9), //set the aspect ratio
+                'showPreview' => true, //false to hide the preview
+                'showDeletePickedImageConfirm' => false, //on true show warning before detach image
+                // 'options' => [
+                //     'id' => 'temp_image_input_id'
+                // ]
+            ]);
+        ?>
+    </div>
+
+    <?= $form->field($model, 'content')->widget(\dosamigos\tinymce\TinyMce::className(), [
+            'options' => [
+                'rows' => 6,
+                'id' => 'pages-form-content',
+            ],
+            'language' => 'en',
+            //'language' => ($model->locale ?? Yii::$app->language),
+            'clientOptions' => [
+                'file_picker_types' => 'image',
+                'file_picker_callback' => new yii\web\JsExpression("function (callback, value, meta) {
+                    var imageInput = $('#pages-temp_image').closest('.image-manager-input');
+                    var imageManager = imageInput.find('.open-modal-imagemanager');
+                    imageManager.click();
+                    $('#pages-temp_image').change(function () {
+                        //console.log($('#pages-temp_image_image').attr('src'));
+                        callback($('#pages-temp_image_image').attr('src'));
+                    });
+                }"),
+                // 'file_browser_callback' => new yii\web\JsExpression("function(field_name, url, type, win) {
+                //     window.open('".yii\helpers\Url::to(['/imagemanager/manager', 'view-mode'=>'iframe', 'select-type'=>'tinymce'])."&tag_name='+field_name,'','width=800,height=540 ,toolbar=no,status=no,menubar=no,scrollbars=no,resizable=no');
+                // }"),
+                'plugins' => [
+                    "advlist", "autolink", "lists", "link", "charmap", "preview", "anchor",
+                    "searchreplace", "visualblocks", "code", "fullscreen",
+                    "insertdatetime", "media", "table", "image", "fullscreen"
+                    //"contextmenu", "paste", "print", 
+                ],
+                'toolbar' => "undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | link image | fullscreen",
+                'image_caption' => true,
+                'convert_urls' => false,
+            ]
+        ]);?>
 
     <?= $form->field($model, 'locale')->widget(SelectInput::class, [
         'items' => $languagesList,
