@@ -1,6 +1,6 @@
 <?php
 
-namespace wdmg\pages\commands;
+namespace mecsu\pages\commands;
 
 use Yii;
 use yii\console\Controller;

@@ -1,14 +1,14 @@
 <?php
 
-namespace wdmg\pages\controllers;
+namespace mecsu\pages\controllers;
 
 use Yii;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 use yii\filters\AccessControl;
-use wdmg\pages\models\Pages;
-use wdmg\pages\models\PagesSearch;
+use mecsu\pages\models\Pages;
+use mecsu\pages\models\PagesSearch;
 
 /**
  * PagesController implements the CRUD actions for Pages model.
@@ -46,7 +46,7 @@ class PagesController extends Controller
                 'class' => AccessControl::class,
                 'rules' => [
                     [
-                        'roles' => ['admin'],
+                        'roles' => ['@'],
                         'allow' => true
                     ],
                 ],
@@ -54,31 +54,31 @@ class PagesController extends Controller
         ];
 
         // If auth manager not configured use default access control
-        if (!Yii::$app->authManager) {
-            $behaviors['access'] = [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'roles' => ['@'],
-                        'allow' => true
-                    ],
-                ]
-            ];
-        } else if ($this->module->moduleExist('admin/rbac')) { // Ok, then we check access according to the rules
-            $behaviors['access'] = [
-                'class' => AccessControl::class,
-                'rules' => [
-                    [
-                        'actions' => ['update', 'create', 'delete'],
-                        'roles' => ['updatePosts'],
-                        'allow' => true
-                    ], [
-                        'roles' => ['viewDashboard'],
-                        'allow' => true
-                    ],
-                ],
-            ];
-        }
+        // if (!Yii::$app->authManager) {
+        //     $behaviors['access'] = [
+        //         'class' => AccessControl::class,
+        //         'rules' => [
+        //             [
+        //                 'roles' => ['@'],
+        //                 'allow' => true
+        //             ],
+        //         ]
+        //     ];
+        // } else if ($this->module->moduleExist('admin/rbac')) { // Ok, then we check access according to the rules
+        //     $behaviors['access'] = [
+        //         'class' => AccessControl::class,
+        //         'rules' => [
+        //             [
+        //                 'actions' => ['update', 'create', 'delete'],
+        //                 'roles' => ['updatePosts'],
+        //                 'allow' => true
+        //             ], [
+        //                 'roles' => ['viewDashboard'],
+        //                 'allow' => true
+        //             ],
+        //         ],
+        //     ];
+        // }
 
         return $behaviors;
     }

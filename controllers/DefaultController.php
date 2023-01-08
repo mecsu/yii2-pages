@@ -1,12 +1,12 @@
 <?php
 
-namespace wdmg\pages\controllers;
+namespace mecsu\pages\controllers;
 
 use Yii;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
-use wdmg\pages\models\Pages;
+use mecsu\pages\models\Pages;
 
 /**
  * DefaultController implements actions for Pages model.

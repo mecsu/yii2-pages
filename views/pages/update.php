@@ -1,7 +1,7 @@
 <?php
 use yii\helpers\Html;
 /* @var $this yii\web\View */
-/* @var $model wdmg\pages\models\Pages */
+/* @var $model mecsu\pages\models\Pages */
 
 $this->title = Yii::t('app/modules/pages', 'Updating page: {name}', [
     'name' => $model->name,
@@ -31,7 +31,7 @@ if ($model->locale && isset(Yii::$app->translations) && class_exists('\wdmg\tran
 }
 
 ?>
-<?php if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && Yii::$app->user->can('updatePosts', [
+<?php if (true || Yii::$app->authManager && $this->context->module->moduleExist('rbac') && Yii::$app->user->can('updatePosts', [
         'created_by' => $model->created_by,
         'updated_by' => $model->updated_by
     ])) : ?>

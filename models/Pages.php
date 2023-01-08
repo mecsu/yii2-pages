@@ -1,6 +1,6 @@
 <?php
 
-namespace wdmg\pages\models;
+namespace mecsu\pages\models;
 
 use Yii;
 use wdmg\base\models\ActiveRecordML;

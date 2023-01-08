@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 
 /* @var $this yii\web\View */
-/* @var $model wdmg\pages\models\Pages */
+/* @var $model mecsu\pages\models\Pages */
 
 $this->title = Yii::t('app/modules/pages', 'Create page');
 $this->params['breadcrumbs'][] = ['label' => $this->context->module->name, 'url' => ['pages/index']];

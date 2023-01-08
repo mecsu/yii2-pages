@@ -1,13 +1,13 @@
 <?php
 
-namespace wdmg\pages\models;
+namespace mecsu\pages\models;
 
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use wdmg\pages\models\Pages;
+use mecsu\pages\models\Pages;
 
 /**
- * PagesSearch represents the model behind the search form of `wdmg\pages\models\Pages`.
+ * PagesSearch represents the model behind the search form of `mecsu\pages\models\Pages`.
  */
 class PagesSearch extends Pages
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace wdmg\pages;
+namespace mecsu\pages;
 
 /**
  * Yii2 Pages
@@ -8,7 +8,7 @@ namespace wdmg\pages;
  * @category        Module
  * @version         1.2.5
  * @author          Alexsander Vyshnyvetskyy <alex.vyshnyvetskyy@gmail.com>
- * @link            https://github.com/wdmg/yii2-pages
+ * @link            https://github.com/mecsu/yii2-pages
  * @copyright       Copyright (c) 2019 - 2021 W.D.M.Group, Ukraine
  * @license         https://opensource.org/licenses/MIT Massachusetts Institute of Technology (MIT) License
  *
@@ -28,7 +28,7 @@ class Module extends BaseModule
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'wdmg\pages\controllers';
+    public $controllerNamespace = 'mecsu\pages\controllers';
 
     /**
      * {@inheritdoc}
