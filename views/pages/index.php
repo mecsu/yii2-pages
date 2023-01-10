@@ -46,7 +46,12 @@ if (isset(Yii::$app->translations) && class_exists('\wdmg\translations\FlagsAsse
                     }
 
                     if (($pageURL = $model->getPageUrl(true, true)) && $model->id)
-                        $output .= '<br/>' . Html::a($model->getUrl(true), $pageURL, [
+                        $viewText = Yii::t('app/modules/pages', 'Preview');
+                        if($model->status == $model::STATUS_PUBLISHED)
+                        {
+                            $viewText = Yii::t('app/modules/pages', 'View');
+                        }
+                        $output .= '<br/>' . Html::a($viewText, $pageURL, [
                             'target' => '_blank',
                             'data-pjax' => 0
                         ]);
@@ -119,40 +124,40 @@ if (isset(Yii::$app->translations) && class_exists('\wdmg\translations\FlagsAsse
                     return $output;
                 }
             ],*/
-            [
-                'attribute' => 'common',
-                'label' => Yii::t('app/modules/pages','Common'),
-                'format' => 'html',
-                'headerOptions' => [
-                    'class' => 'text-center'
-                ],
-                'contentOptions' => [
-                    'class' => 'text-center'
-                ],
-                'value' => function($data) {
-                    $output = '';
-                    if ($data->in_sitemap)
-                        $output .= '<span class="fa fa-fw fa-sitemap text-success" title="' . Yii::t('app/modules/pages','Present in sitemap') . '"></span>';
-                    else
-                        $output .= '<span class="fa fa-fw fa-sitemap text-danger" title="' . Yii::t('app/modules/pages','Not present in sitemap') . '"></span>';
+            // [
+            //     'attribute' => 'common',
+            //     'label' => Yii::t('app/modules/pages','Common'),
+            //     'format' => 'html',
+            //     'headerOptions' => [
+            //         'class' => 'text-center'
+            //     ],
+            //     'contentOptions' => [
+            //         'class' => 'text-center'
+            //     ],
+            //     'value' => function($data) {
+            //         $output = '';
+            //         if ($data->in_sitemap)
+            //             $output .= '<span class="fa fa-fw fa-sitemap text-success" title="' . Yii::t('app/modules/pages','Present in sitemap') . '"></span>';
+            //         else
+            //             $output .= '<span class="fa fa-fw fa-sitemap text-danger" title="' . Yii::t('app/modules/pages','Not present in sitemap') . '"></span>';
 
-                    $output .= "&nbsp;";
+            //         $output .= "&nbsp;";
 
-                    if ($data->in_turbo)
-                        $output .= '<span class="fa fa-fw fa-rocket text-success" title="' . Yii::t('app/modules/pages','Present in Yandex.Turbo') . '"></span>';
-                    else
-                        $output .= '<span class="fa fa-fw fa-rocket text-danger" title="' . Yii::t('app/modules/pages','Not present in Yandex.Turbo') . '"></span>';
+            //         if ($data->in_turbo)
+            //             $output .= '<span class="fa fa-fw fa-rocket text-success" title="' . Yii::t('app/modules/pages','Present in Yandex.Turbo') . '"></span>';
+            //         else
+            //             $output .= '<span class="fa fa-fw fa-rocket text-danger" title="' . Yii::t('app/modules/pages','Not present in Yandex.Turbo') . '"></span>';
 
-                    $output .= "&nbsp;";
+            //         $output .= "&nbsp;";
 
-                    if ($data->in_amp)
-                        $output .= '<span class="fa fa-fw fa-bolt text-success" title="' . Yii::t('app/modules/pages','Present in Google AMP') . '"></span>';
-                    else
-                        $output .= '<span class="fa fa-fw fa-bolt text-danger" title="' . Yii::t('app/modules/pages','Not present in Google AMP') . '"></span>';
+            //         if ($data->in_amp)
+            //             $output .= '<span class="fa fa-fw fa-bolt text-success" title="' . Yii::t('app/modules/pages','Present in Google AMP') . '"></span>';
+            //         else
+            //             $output .= '<span class="fa fa-fw fa-bolt text-danger" title="' . Yii::t('app/modules/pages','Not present in Google AMP') . '"></span>';
 
-                    return $output;
-                }
-            ],
+            //         return $output;
+            //     }
+            // ],
             [
                 'attribute' => 'locale',
                 'label' => Yii::t('app/modules/pages','Language versions'),
@@ -301,81 +306,82 @@ if (isset(Yii::$app->translations) && class_exists('\wdmg\translations\FlagsAsse
                 'contentOptions' => [
                     'class' => 'text-center'
                 ],
+                'template' => '{update} {delete}',
                 'buttons'=> [
-                    'view' => function($url, $data, $key) {
-                        $output = [];
-                        $versions = $data->getAllVersions($data->id, true);
-                        $locales = ArrayHelper::map($versions, 'id', 'locale');
-                        if (isset(Yii::$app->translations)) {
-                            foreach ($locales as $item_locale) {
-                                $locale = Yii::$app->translations->parseLocale($item_locale, Yii::$app->language);
-                                if ($item_locale === $locale['locale']) { // Fixing default locale from PECL intl
+                    // 'view' => function($url, $data, $key) {
+                    //     $output = [];
+                    //     $versions = $data->getAllVersions($data->id, true);
+                    //     $locales = ArrayHelper::map($versions, 'id', 'locale');
+                    //     if (isset(Yii::$app->translations)) {
+                    //         foreach ($locales as $item_locale) {
+                    //             $locale = Yii::$app->translations->parseLocale($item_locale, Yii::$app->language);
+                    //             if ($item_locale === $locale['locale']) { // Fixing default locale from PECL intl
 
-                                    if ($data->locale === $locale['locale']) // It`s source version
-                                        $output[] = Html::a(Yii::t('app/modules/pages','View source version: {language}', [
-                                            'language' => $locale['name']
-                                        ]), ['pages/view', 'id' => $data->id]);
-                                    else  // Other localization versions
-                                        $output[] = Html::a(Yii::t('app/modules/pages','View language version: {language}', [
-                                            'language' => $locale['name']
-                                        ]), ['pages/view', 'id' => $data->id, 'locale' => $locale['locale']]);
+                    //                 if ($data->locale === $locale['locale']) // It`s source version
+                    //                     $output[] = Html::a(Yii::t('app/modules/pages','View source version: {language}', [
+                    //                         'language' => $locale['name']
+                    //                     ]), ['pages/view', 'id' => $data->id]);
+                    //                 else  // Other localization versions
+                    //                     $output[] = Html::a(Yii::t('app/modules/pages','View language version: {language}', [
+                    //                         'language' => $locale['name']
+                    //                     ]), ['pages/view', 'id' => $data->id, 'locale' => $locale['locale']]);
 
-                                }
-                            }
-                        } else {
-                            foreach ($locales as $locale) {
-                                if (!empty($locale)) {
+                    //             }
+                    //         }
+                    //     } else {
+                    //         foreach ($locales as $locale) {
+                    //             if (!empty($locale)) {
 
-                                    if (extension_loaded('intl'))
-                                        $language = mb_convert_case(trim(\Locale::getDisplayLanguage($locale, Yii::$app->language)), MB_CASE_TITLE, "UTF-8");
-                                    else
-                                        $language = $locale;
+                    //                 if (extension_loaded('intl'))
+                    //                     $language = mb_convert_case(trim(\Locale::getDisplayLanguage($locale, Yii::$app->language)), MB_CASE_TITLE, "UTF-8");
+                    //                 else
+                    //                     $language = $locale;
 
-                                    if ($data->locale === $locale) // It`s source version
-                                        $output[] = Html::a(Yii::t('app/modules/pages','View source version: {language}', [
-                                            'language' => $language
-                                        ]), ['pages/view', 'id' => $data->id]);
-                                    else  // Other localization versions
-                                        $output[] = Html::a(Yii::t('app/modules/pages','View language version: {language}', [
-                                            'language' => $language
-                                        ]), ['pages/view', 'id' => $data->id, 'locale' => $locale]);
+                    //                 if ($data->locale === $locale) // It`s source version
+                    //                     $output[] = Html::a(Yii::t('app/modules/pages','View source version: {language}', [
+                    //                         'language' => $language
+                    //                     ]), ['pages/view', 'id' => $data->id]);
+                    //                 else  // Other localization versions
+                    //                     $output[] = Html::a(Yii::t('app/modules/pages','View language version: {language}', [
+                    //                         'language' => $language
+                    //                     ]), ['pages/view', 'id' => $data->id, 'locale' => $locale]);
 
-                                }
-                            }
-                        }
+                    //             }
+                    //         }
+                    //     }
 
-                        if (is_countable($output)) {
-                            if (count($output) > 1) {
-                                $html = '';
-                                $html .= '<div class="btn-group">';
-                                $html .= Html::a(
-                                    '<span class="glyphicon glyphicon-eye-open"></span> ' .
-                                    Yii::t('app/modules/pages', 'View') .
-                                    ' <span class="caret"></span>',
-                                    '#',
-                                    [
-                                        'class' => "btn btn-block btn-link btn-xs dropdown-toggle",
-                                        'data-toggle' => "dropdown",
-                                        'aria-haspopup' => "true",
-                                        'aria-expanded' => "false"
-                                    ]);
-                                $html .= '<ul class="dropdown-menu dropdown-menu-right">';
-                                $html .= '<li>' . implode("</li><li>", $output) . '</li>';
-                                $html .= '</ul>';
-                                $html .= '</div>';
-                                return $html;
-                            }
-                        }
-                        return Html::a('<span class="glyphicon glyphicon-eye-open"></span> ' .
-                            Yii::t('app/modules/pages', 'View'),
-                            [
-                                'pages/view',
-                                'id' => $data->id
-                            ], [
-                                'class' => 'btn btn-link btn-xs'
-                            ]
-                        );
-                    },
+                    //     if (is_countable($output)) {
+                    //         if (count($output) > 1) {
+                    //             $html = '';
+                    //             $html .= '<div class="btn-group">';
+                    //             $html .= Html::a(
+                    //                 '<span class="glyphicon glyphicon-eye-open"></span> ' .
+                    //                 Yii::t('app/modules/pages', 'View') .
+                    //                 ' <span class="caret"></span>',
+                    //                 '#',
+                    //                 [
+                    //                     'class' => "btn btn-block btn-link btn-xs dropdown-toggle",
+                    //                     'data-toggle' => "dropdown",
+                    //                     'aria-haspopup' => "true",
+                    //                     'aria-expanded' => "false"
+                    //                 ]);
+                    //             $html .= '<ul class="dropdown-menu dropdown-menu-right">';
+                    //             $html .= '<li>' . implode("</li><li>", $output) . '</li>';
+                    //             $html .= '</ul>';
+                    //             $html .= '</div>';
+                    //             return $html;
+                    //         }
+                    //     }
+                    //     return Html::a('<span class="glyphicon glyphicon-eye-open"></span> ' .
+                    //         Yii::t('app/modules/pages', 'View'),
+                    //         [
+                    //             'pages/view',
+                    //             'id' => $data->id
+                    //         ], [
+                    //             'class' => 'btn btn-link btn-xs'
+                    //         ]
+                    //     );
+                    // },
                     'update' => function($url, $data, $key) {
 
                         if (Yii::$app->authManager && $this->context->module->moduleExist('rbac') && !Yii::$app->user->can('updatePosts', [

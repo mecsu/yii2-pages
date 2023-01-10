@@ -147,14 +147,14 @@ class DefaultController extends Controller
         if (!$draft) {
             $cond = [
                 'alias' => $alias,
-                'route' => $route,
+                //'route' => $route,
                 'locale' => ($locale) ? $locale : null,
                 'status' => Pages::STATUS_PUBLISHED,
             ];
         } else {
             $cond = [
                 'alias' => $alias,
-                'route' => $route,
+                //'route' => $route,
                 'status' => Pages::STATUS_DRAFT,
             ];
         }

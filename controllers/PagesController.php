@@ -36,7 +36,7 @@ class PagesController extends Controller
                 'class' => VerbFilter::class,
                 'actions' => [
                     'index' => ['get'],
-                    'view' => ['get'],
+                    //'view' => ['get'],
                     'delete' => ['post'],
                     'create' => ['get', 'post'],
                     'update' => ['get', 'post'],
@@ -327,14 +327,14 @@ class PagesController extends Controller
      * @return string
      * @throws NotFoundHttpException
      */
-    public function actionView($id)
-    {
-        $model = $this->findModel($id);
-        return $this->render('view', [
-            'module' => $this->module,
-            'model' => $model
-        ]);
-    }
+    // public function actionView($id)
+    // {
+    //     $model = $this->findModel($id);
+    //     return $this->render('view', [
+    //         'module' => $this->module,
+    //         'model' => $model
+    //     ]);
+    // }
 
     /**
      * Deletes an existing Pages model.

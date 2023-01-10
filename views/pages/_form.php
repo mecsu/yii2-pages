@@ -43,7 +43,7 @@ use wdmg\widgets\LangSwitcher;
             'save' => Yii::t('app/modules/pages', 'Save')
         ],
         'options' => [
-            'baseUrl' => ($model->id) ? $model->url : Url::to($model->getRoute(), true)
+            'baseUrl' => ($model->id) ? "https://mecsu.vn/pages/{$model->alias}": "https://mecsu.vn/pages/"
         ]
     ])->label(Yii::t('app/modules/pages', 'Page URL')); ?>
 
