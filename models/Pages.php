@@ -204,7 +204,7 @@ class Pages extends ActiveRecordML
         if($this->status === self::STATUS_PUBLISHED)
         {
             // build slug url with hash
-            return "https://mecsu.vn/pages/{$this->alias}";
+            return "https://mecsu.vn/trang/{$this->alias}";
         }
         return parent::getModelUrl($withScheme, $realUrl);
     }
